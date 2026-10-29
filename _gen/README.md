@@ -1,0 +1,5 @@
+# Site generator
+Build: `python3 _gen/dun/gen.py OUTDIR --json cfg.json` (cfg.json = list of business configs; see PRESETS/SCENES in gen.py and the CL examples).
+Needs only python3 (no pip). Each config -> OUTDIR/<slug>/index.html (single file, ~1.8MB with 3D, ~0.2MB when kind=none).
+Fields: slug,name,suburb,headline,sub,cta_label,cta_url,words[],serv_title,services[{title,desc}],address,phone,email,close,close_sub,facts[[label,value]x3],card[small,html],band[title,text],kind(lift|blueprint|bag|float|core|none),layout(a|b|c),preset(see PRESETS),font(anton|bsd|fraunces),scene{} overrides.
+Test: python3 _gen/dun/shotg.py (needs playwright, expects out_gen/<slug>/index.html).
