@@ -76,6 +76,7 @@ PRESETS={
  'blush-pink':dict(bg='#fff1ea',fg='#2a1410',ac='#ff5d7a',on='#ffffff',c1='#ffffff',mut='#7a5a52',light=True,lc='#ff9aa9'),
  'forest-lime':dict(bg='#0c1a14',fg='#eaf5ec',ac='#c6f24a',on='#0c1a14',c1='#13261d',mut='#a7bfae',light=False,lc='#3fbf7a'),
  'violet-hot':dict(bg='#100a1c',fg='#f1eaff',ac='#ff3df0',on='#100a1c',c1='#1a1230',mut='#b9a8d9',light=False,lc='#8a4dff'),
+ 'espresso-latte':dict(bg='#17100b',fg='#f6ece0',ac='#d99a5b',on='#17100b',c1='#241812',mut='#c4b09c',light=False,lc='#d99a5b'),
  'sand-teal':dict(bg='#f3ece0',fg='#16302f',ac='#0f8b8d',on='#ffffff',c1='#ffffff',mut='#5d6d68',light=True,lc='#7fd0cf'),
 }
 SCENES={
@@ -92,6 +93,7 @@ SCENES={
  'shoe':dict(kind='shoe',envTop='#fff4dd',envMid='#8a6a3a',envBot='#0e0a05',exposure=1.15),
  'ribbon':dict(kind='ribbon',envTop='#f1e4ff',envMid='#5a3b8f',envBot='#0b0716',exposure=1.1),
  'mirrorball':dict(kind='mirrorball',envTop='#ffffff',envMid='#d79bb0',envBot='#3a1a28',exposure=1.2),
+ 'cafe':dict(kind='cafe',envTop='#fff3e0',envMid='#9a6a43',envBot='#1a0e07',exposure=1.15),
  'ballerina':dict(kind='ballerina',envTop='#ffffff',envMid='#9fcfcc',envBot='#244a49',exposure=1.1),
 }
 def from_json(d):
