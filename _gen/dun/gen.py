@@ -85,6 +85,14 @@ SCENES={
  'float':dict(kind='float',envTop='#ffffff',envMid='#8ecdf2',envBot='#2a4d73',exposure=1.0),
  'core':dict(kind='core'),
  'none':dict(kind='none'),
+ 'rings':dict(kind='rings',envTop='#e8f2ff',envMid='#3b5f8f',envBot='#08152b',exposure=1.1),
+ 'tramp':dict(kind='tramp',envTop='#ffffff',envMid='#c9ced6',envBot='#3a3f48',exposure=1.0),
+ 'stones':dict(kind='stones',envTop='#e9f7ee',envMid='#4c7a63',envBot='#0b1d16',exposure=1.0),
+ 'lotus':dict(kind='lotus',envTop='#ffffff',envMid='#a8d5e8',envBot='#2c5a6b',exposure=1.1),
+ 'shoe':dict(kind='shoe',envTop='#fff4dd',envMid='#8a6a3a',envBot='#0e0a05',exposure=1.15),
+ 'ribbon':dict(kind='ribbon',envTop='#f1e4ff',envMid='#5a3b8f',envBot='#0b0716',exposure=1.1),
+ 'mirrorball':dict(kind='mirrorball',envTop='#ffffff',envMid='#d79bb0',envBot='#3a1a28',exposure=1.2),
+ 'ballerina':dict(kind='ballerina',envTop='#ffffff',envMid='#9fcfcc',envBot='#244a49',exposure=1.1),
 }
 def from_json(d):
     x=dict(PRESETS[d.get('preset','charcoal-yellow')]);x.update(d)
