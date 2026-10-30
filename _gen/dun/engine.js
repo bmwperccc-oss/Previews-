@@ -164,16 +164,28 @@ if(kind==='lotus'){
 if(kind==='shoe'){
   const g=G();g.position.y=-.2;camera.position.set(0,.4,13);
   const sat=new THREE.MeshPhysicalMaterial({color:hsl(.97,.55,.8),roughness:.28,metalness:.05,clearcoat:.8,clearcoatRoughness:.2,sheen:1,sheenColor:new THREE.Color(0xffffff),side:THREE.DoubleSide});
-  const prof=[[0,0],[.3,0],[.38,.04],[.55,.3],[.66,.7],[.64,1.1],[.55,1.5],[.47,1.95],[.45,2.4],[.47,2.7]].map(function(a){return new THREE.Vector2(a[0],a[1])});
-  function shoe(){const s=new THREE.Group(),l=new THREE.Mesh(new THREE.LatheGeometry(prof,64),sat);l.scale.set(.85,1,1.2);s.add(l);
-    const inner=new THREE.Mesh(new THREE.CircleGeometry(.43,40),M({color:0x2a1a1f,roughness:.9}));inner.rotation.x=-Math.PI/2;inner.position.y=2.62;inner.scale.set(.85,1.2,1);s.add(inner);
-    const tip=new THREE.Mesh(new THREE.CylinderGeometry(.3,.3,.03,40),M({color:hsl(hueOf(accent),.4,.55),roughness:.7}));tip.position.y=.01;tip.scale.set(.85,1,1.2);s.add(tip);
-    const draw=new THREE.Mesh(new THREE.TorusGeometry(.48,.018,8,64),M({color:0xffffff,roughness:.4}));draw.rotation.x=Math.PI/2;draw.position.y=2.55;draw.scale.set(.85,1.2,1);s.add(draw);
-    const stitch=new THREE.Mesh(new THREE.TorusGeometry(.62,.012,6,64),M({color:0xffffff,roughness:.5}));stitch.rotation.x=Math.PI/2;stitch.position.y=1.0;stitch.scale.set(.85,1.2,1);s.add(stitch);
+  const satIn=M({color:0x2a1a1f,roughness:.9,side:THREE.BackSide});sat.side=THREE.FrontSide;
+  function lerpT(T,v){for(let k=1;k<T.length;k++){if(v<=T[k][0]){const u=(v-T[k-1][0])/(T[k][0]-T[k-1][0]);return T[k-1][1]+(T[k][1]-T[k-1][1])*u}}return T[T.length-1][1]}
+  const RX=[[0,.40],[.08,.45],[.28,.43],[.55,.37],[.8,.35],[1,.38]],ZF=[[0,.38],[.1,.44],[.3,.42],[.6,.33],[1,.29]],ZB=[[0,.38],[.15,.42],[.5,.45],[.8,.55],[1,.52]];
+  function spw(x,e){return Math.sign(x)*Math.pow(Math.abs(x),e)}
+  function secPt(v,th,sc){const n=v<.25?3.4:2.3,e=2/n,c=Math.cos(th),sn=Math.sin(th);const x=spw(c,e)*lerpT(RX,v)*sc,z=(sn>0?spw(sn,e)*lerpT(ZF,v):spw(sn,e)*lerpT(ZB,v))*sc;
+    const fr=Math.pow(Math.max(0,sn),1.4)*(1-Math.abs(c)*.35),H=3.0-1.15*fr;return new THREE.Vector3(x,v*H+(v<.0?0:0)-(sc===0?0:0),z-(v*.14))}
+  function shoeGeo(){const NT=72,rows=[{v:0,s:0},{v:0,s:1}];for(let k=1;k<=26;k++)rows.push({v:k/26,s:1});const pos=[],idx=[];
+    rows.forEach(function(r){for(let a=0;a<=NT;a++){const p=secPt(r.v,a/NT*Math.PI*2,r.s);pos.push(p.x,p.y,p.z)}});
+    for(let r=0;r<rows.length-1;r++)for(let a=0;a<NT;a++){const i0=r*(NT+1)+a,i1=i0+1,i2=i0+NT+1,i3=i2+1;idx.push(i0,i2,i1,i1,i2,i3)}
+    const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.Float32BufferAttribute(pos,3));g.setIndex(idx);g.computeVertexNormals();return g}
+  const SG=shoeGeo();
+  function rimCurve(v,sc,dz){const pts=[];for(let a=0;a<48;a++){const p=secPt(v,a/48*Math.PI*2,sc);p.z+=dz||0;pts.push(p)}return new THREE.CatmullRomCurve3(pts,true)}
+  function shoe(){const s=new THREE.Group();s.add(new THREE.Mesh(SG,sat));const inn=new THREE.Mesh(SG,satIn);inn.scale.setScalar(.985);s.add(inn);
+    const draw=new THREE.Mesh(new THREE.TubeGeometry(rimCurve(1,1.0),120,.022,8,true),M({color:hsl(.97,.5,.9),roughness:.4}));s.add(draw);
+    const bind=new THREE.Mesh(new THREE.TubeGeometry(rimCurve(.93,1.003),120,.013,6,true),M({color:0xffffff,roughness:.5}));s.add(bind);
+    const plat=new THREE.Mesh(new THREE.TubeGeometry(rimCurve(.012,1.0),90,.03,8,true),M({color:hsl(hueOf(accent),.4,.5),roughness:.7}));s.add(plat);
+    const sole=new THREE.Mesh(new THREE.TubeGeometry(rimCurve(.3,1.004),90,.01,6,true),M({color:0xffffff,roughness:.5}));s.add(sole);
+    const sat2=M({color:hsl(hueOf(accent),.45,.45),roughness:.8});const pad=new THREE.Mesh(new THREE.CircleGeometry(.3,36),sat2);pad.rotation.x=Math.PI/2;pad.position.y=-.02;pad.scale.set(1.2,1,1.1);s.add(pad);
     return s}
   const a=shoe(),b=shoe();a.position.set(-1.0,-2.2,0);b.position.set(1.0,-2.2,.3);a.rotation.set(.1,0,.12);b.rotation.set(-.08,0,-.14);g.add(a);g.add(b);
   const rm=dbl(new THREE.MeshStandardMaterial({color:hsl(.97,.6,.72),roughness:.25,metalness:.1,emissive:hsl(.97,.6,.3),emissiveIntensity:.2}));
-  [[a,-1],[b,1]].forEach(function(q,k){for(let j=0;j<2;j++){const r=ribbon(.2,60,function(u,t,o){const ph=j*Math.PI+k;const ang=u*7+ph+t*.25;const rr=.5+u*.25;o.set(q[0].position.x+Math.cos(ang)*rr*(1-u*.2)+u*q[1]*1.1*Math.sin(t*.9+u*4+k),q[0].position.y+2.6-u*u*.5+Math.sin(u*9+t*1.6+ph)*.2*u+u*1.1,Math.sin(ang)*rr*1.2+Math.sin(u*5+t+ph)*.35*u)},rm);g.add(r);q.push(r)}});
+  [[a,-1],[b,1]].forEach(function(q,k){for(let j=0;j<2;j++){const r=ribbon(.2,60,function(u,t,o){const ph=j*Math.PI+k;const ang=u*7+ph+t*.25;const rr=.5+u*.25;o.set(q[0].position.x+Math.cos(ang)*rr*(1-u*.2)+u*q[1]*1.1*Math.sin(t*.9+u*4+k),q[0].position.y+2.9-u*u*.5+Math.sin(u*9+t*1.6+ph)*.2*u+u*1.1,Math.sin(ang)*rr*1.2+Math.sin(u*5+t+ph)*.35*u)},rm);g.add(r);q.push(r)}});
   const sp=dust(120,3.6,accent,.07);g.add(sp);
   ticks.push(function(t){const rr=[];g.children.forEach(function(c){if(c.userData&&c.userData.upd)c.userData.upd(t)});a.rotation.y=t*.5;b.rotation.y=-t*.45;a.position.y=-2.2+Math.sin(t*1.2)*.12;b.position.y=-2.2+Math.sin(t*1.2+1.5)*.12;sp.rotation.y=t*.08});
 }
