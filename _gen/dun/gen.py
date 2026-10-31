@@ -94,6 +94,7 @@ SCENES={
  'ribbon':dict(kind='ribbon',envTop='#f1e4ff',envMid='#5a3b8f',envBot='#0b0716',exposure=1.1),
  'mirrorball':dict(kind='mirrorball',envTop='#ffffff',envMid='#d79bb0',envBot='#3a1a28',exposure=1.2),
  'cafe':dict(kind='cafe',envTop='#fff3e0',envMid='#9a6a43',envBot='#1a0e07',exposure=1.15),
+ 'barber':dict(kind='barber',envTop='#ffffff',envMid='#7d8aa3',envBot='#10141c',exposure=1.15),
  'ballerina':dict(kind='ballerina',envTop='#ffffff',envMid='#9fcfcc',envBot='#244a49',exposure=1.1),
 }
 def from_json(d):

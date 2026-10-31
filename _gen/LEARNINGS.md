@@ -3,7 +3,7 @@
 ## Rules for the daily batch
 - Before sending, check the domain resolves (e.g. `dig +short MX domain`). 4 of 31 first sends bounced: 2 inferred/typo'd domains (brockfitness.nz, strengthnco.com), 1 wrong gmail address, 1 `info@` group on a PlaySport listing. Never use "inferred" or "listing (inferred)" contact sources; prefer an address copied verbatim from the business's own site.
 - Sample size is tiny (31 sent, 0 replies as of 2026-10-29): do not change approach wording on this data yet.
-- Available 3D kinds: lift, blueprint, bag, float, core, rings, tramp, stones, lotus, shoe, ribbon, mirrorball, ballerina, cafe (new), none. Use `kind='cafe'` (preset `espresso-latte`) for cafes/coffee/bakeries.
+- Available 3D kinds: lift, blueprint, bag, float, core, rings, tramp, stones, lotus, shoe, ribbon, mirrorball, ballerina, cafe, barber (new 2026-10-31), none. Use `kind='cafe'` (preset `espresso-latte`) for cafes/coffee/bakeries.
 
 ## 2026-10-29
 - Stats: 31 sent, 27 delivered, 0 replies, 4 bounces. No approach/type/style can be ranked yet.
@@ -19,3 +19,9 @@
 ## Rules for the daily batch (added 2026-10-30)
 - Contact source ranking: (1) address visible on the business's own website; (2) directory listing only if the domain has a real site AND the address matches it; never use generic info@/hello@ from a third-party listing (Lovetaupo, PlaySport, Age Concern) without a second confirmation (the business's own site or Facebook page). Prefer personal-name addresses.
 - Reason for no-thanks replies is not captured; keep the "reply no thanks" line, do not change wording yet.
+
+## 2026-10-31
+- Stats: 36 sent, 1 reply (no thanks, Pulse Pilates), 0 interested, 5 hard bounces (+1 temporary delay, gymkids.co.nz). 6 queued. Too small to rank approaches/styles.
+- Bounces by source: PlaySport info@ listing 2 (Hybrid gmail, CrossFit Whakatane), inferred/typo domain 2, Lovetaupo listing 1 (Mancraft hello@). Own-website addresses: 0 bounces so far. Rule stands: own-site verbatim addresses first.
+- Change today: added kind=barber (striped pole with scrolling stripes, scissors, comb). Verified desktop 1440x900 and mobile 390x844, no JS errors, object fully visible. No existing published folder touched.
+- Rule: use kind=barber for barbers/hair; do not reuse kind=core for them. Mancraft (barber, bounced) could be rebuilt as a new slug only if a verified contact is found.

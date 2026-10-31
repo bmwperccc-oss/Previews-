@@ -250,6 +250,34 @@ if(kind==='cafe'){
   ticks.push(function(t){g.children.forEach(function(c){if(c.userData&&c.userData.upd)c.userData.upd(t)});g.rotation.y=Math.sin(t*.35)*.5;beans.forEach(function(b,i){b.rotation.y+=.004;b.position.y=-.42+Math.sin(t*.9+i)*.03});sp.rotation.y=t*.06});
 }
 
+if(kind==='barber'){
+  const g=G();camera.position.set(0,0.2,19);g.rotation.x=.12;
+  const sTex=tex(256,256,function(c,w,h){c.fillStyle='#f6f3ee';c.fillRect(0,0,w,h);const cols=[C.stripeA||'#d6322f',C.stripeB||'#1f4fb8'];for(let k=0;k<2;k++){c.fillStyle=cols[k];c.beginPath();const off=k*w/2;for(let x=-h;x<w+h;x+=w){c.moveTo(x+off,0);c.lineTo(x+off+w/4,0);c.lineTo(x+off+w/4-h,h);c.lineTo(x+off-h,h);c.closePath()}c.fill()}});
+  sTex.wrapS=sTex.wrapT=THREE.RepeatWrapping;sTex.repeat.set(1,2.2);
+  const poleM=new THREE.MeshPhysicalMaterial({map:sTex,roughness:.12,metalness:0,clearcoat:1,clearcoatRoughness:.05});
+  const pole=cyl(.95,.95,5.4,poleM,64);pole.position.y=.3;g.add(pole);
+  const glass=new THREE.Mesh(new THREE.CylinderGeometry(1.02,1.02,5.5,64,1,true),new THREE.MeshPhysicalMaterial({color:0xffffff,transparent:true,opacity:.12,roughness:.02,clearcoat:1,side:THREE.DoubleSide,depthWrite:false}));glass.position.y=.3;g.add(glass);
+  [1,-1].forEach(function(f){const cap=cyl(1.1,1.1,.5,steel,64);cap.position.y=.3+f*3.0;g.add(cap);
+    const dome=new THREE.Mesh(new THREE.SphereGeometry(.95,48,24,0,Math.PI*2,0,Math.PI/2),steel);dome.position.y=.3+f*3.25;if(f<0)dome.rotation.x=Math.PI;g.add(dome);
+    const knob=new THREE.Mesh(new THREE.SphereGeometry(.2,24,16),steel);knob.position.y=.3+f*4.2;g.add(knob);
+    const ring=new THREE.Mesh(new THREE.TorusGeometry(1.06,.07,14,64),M({color:accent,roughness:.3,metalness:.5}));ring.rotation.x=Math.PI/2;ring.position.y=.3+f*2.78;g.add(ring)});
+  const plate=cyl(.7,.7,.12,steel,48);plate.rotation.x=Math.PI/2;plate.position.set(0,.3,-1.35);g.add(plate);
+  const arm=cyl(.12,.12,1.4,steel,16);arm.rotation.x=Math.PI/2;arm.position.set(0,.3,-.7);g.add(arm);
+  const sc=new THREE.Group(),bl=[],bm=M({color:0xe4e8ef,metalness:1,roughness:.12});
+  [1,-1].forEach(function(f){const h=new THREE.Group();
+    const blade=new THREE.Mesh(new THREE.BoxGeometry(.22,2.5,.07),bm);blade.position.set(0,1.45,0);const tip=new THREE.Mesh(new THREE.ConeGeometry(.11,.5,4),bm);tip.position.set(0,2.95,0);tip.scale.set(1,1,.32);h.add(blade,tip);
+    const sh=cyl(.07,.07,1.1,bm,12);sh.position.y=-.35;h.add(sh);
+    const rg=new THREE.Mesh(new THREE.TorusGeometry(.42,.09,14,40),M({color:accent,roughness:.28,metalness:.7}));rg.position.set(f*.1,-1.3,0);h.add(rg);
+    h.rotation.z=f*.0;sc.add(h);bl.push([h,f])});
+  const pin=cyl(.1,.1,.2,steel,16);pin.rotation.x=Math.PI/2;sc.add(pin);
+  sc.position.set(3.3,-.6,.4);sc.scale.setScalar(.82);sc.rotation.z=-.35;sc.rotation.y=-.5;g.add(sc);
+  const comb=new THREE.Group();const cb=new THREE.Mesh(new THREE.BoxGeometry(2.6,.28,.08),M({color:0x14171c,roughness:.3,metalness:.2}));comb.add(cb);
+  for(let i=0;i<20;i++){const t=new THREE.Mesh(new THREE.BoxGeometry(.06,.5,.06),M({color:0x14171c,roughness:.3}));t.position.set(-1.2+i*.126,-.38,0);comb.add(t)}
+  comb.position.set(-3.1,-2.0,.3);comb.rotation.z=.5;comb.rotation.y=.4;g.add(comb);
+  const sp=dust(120,3.4,accent,.05);g.add(sp);g.position.y=-.1;g.scale.setScalar(.78);
+  ticks.push(function(t){sTex.offset.y=-t*.18;const a=.12+(Math.sin(t*1.4)*.5+.5)*.32;bl.forEach(function(q){q[0].rotation.z=q[1]*a});sc.rotation.z=-.35+Math.sin(t*.7)*.08;comb.position.y=-2.0+Math.sin(t*.8)*.08;g.rotation.y=Math.sin(t*.35)*.5;sp.rotation.y=t*.06});
+}
+
 function size(){const w=host.clientWidth||600,h=host.clientHeight||600;renderer.setSize(w,h,false);camera.aspect=w/h;const f=Math.max(1,.85/(w/h));camera.zoom=1/ (w/h<.9?1.35:1);camera.updateProjectionMatrix()}
 new ResizeObserver(size).observe(host);size();
 let vis=true;new IntersectionObserver(function(e){vis=e[0].isIntersecting}).observe(host);
