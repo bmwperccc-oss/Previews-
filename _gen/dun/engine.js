@@ -278,6 +278,50 @@ if(kind==='barber'){
   ticks.push(function(t){sTex.offset.y=-t*.18;const a=.12+(Math.sin(t*1.4)*.5+.5)*.32;bl.forEach(function(q){q[0].rotation.z=q[1]*a});sc.rotation.z=-.35+Math.sin(t*.7)*.08;comb.position.y=-2.0+Math.sin(t*.8)*.08;g.rotation.y=Math.sin(t*.35)*.5;sp.rotation.y=t*.06});
 }
 
+if(kind==='plumb'){
+  const g=G();camera.position.set(0,0.2,19);g.rotation.x=.14;
+  const brass=M({color:C.brass||0xd9a441,metalness:1,roughness:.24});
+  // adjustable wrench
+  const w=new THREE.Group();
+  const hs=new THREE.Shape();hs.moveTo(-.3,-3.6);hs.lineTo(.3,-3.6);hs.lineTo(.42,.1);hs.lineTo(-.42,.1);hs.closePath();
+  const handle=new THREE.Mesh(new THREE.ExtrudeGeometry(hs,{depth:.22,bevelEnabled:true,bevelThickness:.05,bevelSize:.05,bevelSegments:3}),steel);handle.position.z=-.11;w.add(handle);
+  const hole=cyl(.11,.11,.4,dark,20);hole.rotation.x=Math.PI/2;hole.position.set(0,-3.25,0);w.add(hole);
+  const hd=new THREE.Shape();hd.moveTo(-.9,0);hd.lineTo(.9,0);hd.lineTo(.95,1.2);hd.lineTo(.62,1.95);hd.lineTo(.0,2.1);hd.lineTo(-.62,1.95);hd.lineTo(-.95,1.2);hd.closePath();
+  const jaw=new THREE.Path();jaw.moveTo(-.34,.7);jaw.lineTo(.34,.7);jaw.lineTo(.34,2.2);jaw.lineTo(-.34,2.2);jaw.closePath();hd.holes.push(jaw);
+  const head=new THREE.Mesh(new THREE.ExtrudeGeometry(hd,{depth:.3,bevelEnabled:true,bevelThickness:.05,bevelSize:.05,bevelSegments:3}),steel);head.position.set(0,0,-.15);w.add(head);
+  const mj=new THREE.Mesh(new THREE.BoxGeometry(.34,1.0,.28),steel);mj.position.set(.52,1.15,0);w.add(mj);
+  const worm=cyl(.14,.14,1.3,steelK,24);worm.rotation.z=Math.PI/2;worm.position.set(.2,.45,0);w.add(worm);
+  for(let i=0;i<8;i++){const r=new THREE.Mesh(new THREE.TorusGeometry(.14,.025,8,20),dark);r.rotation.y=Math.PI/2;r.position.set(-.35+i*.14,.45,0);w.add(r)}
+  const grip=new THREE.Mesh(new THREE.CylinderGeometry(.34,.4,1.7,32),M({color:accent,roughness:.5,metalness:.1}));grip.position.set(0,-2.55,0);grip.scale.z=.55;w.add(grip);
+  w.position.set(-3.1,-.2,.5);w.rotation.z=.55;w.rotation.y=.35;w.scale.setScalar(1.05);g.add(w);
+  // pipe elbow with flanges and valve wheel
+  const p=new THREE.Group();
+  const el=new THREE.Mesh(new THREE.TorusGeometry(1.5,.42,28,60,Math.PI/2),brass);el.rotation.z=Math.PI;el.position.set(1.5,0,0);p.add(el);
+  const vert=cyl(.42,.42,2.4,brass,40);vert.position.set(0,1.2+0,0);vert.position.y=-1.2;p.add(vert);
+  const horz=rotZ(cyl(.42,.42,2.6,brass,40));horz.position.set(2.8,-1.5,0);horz.visible=false;
+  const outp=rotZ(cyl(.42,.42,2.4,brass,40));outp.position.set(1.5+1.2,1.5,0);
+  vert.position.set(0,0,0);el.position.set(1.5,0,0);el.rotation.z=Math.PI;
+  const fl=function(x,y,rz){const f=cyl(.78,.78,.2,steel,48);f.position.set(x,y,0);f.rotation.z=rz;p.add(f);for(let i=0;i<6;i++){const a=i/6*Math.PI*2,b=cyl(.07,.07,.32,dark,10);b.position.set(0,0,0);const q=new THREE.Group();q.add(b);b.position.set(Math.cos(a)*.6,0,Math.sin(a)*.6);q.position.set(x,y,0);q.rotation.z=rz;p.add(q)}};
+  p.children=[];
+  const ring=function(r,t,col,y){const m=new THREE.Mesh(new THREE.TorusGeometry(r,t,14,40),col);m.rotation.x=Math.PI/2;m.position.y=y;return m};
+  // straight pipe up (y), elbow, then pipe going right (x)
+  const up=cyl(.42,.42,2.8,brass,40);up.position.set(0,-1.4,0);p.add(up);
+  const elb=new THREE.Mesh(new THREE.TorusGeometry(1.1,.42,28,60,Math.PI/2),brass);elb.position.set(1.1,0,0);elb.rotation.z=Math.PI/2;p.add(elb);
+  const rt=rotZ(cyl(.42,.42,2.8,brass,40));rt.position.set(2.5+.2,1.1,0);p.add(rt);
+  [[0,-2.8,0],[0,-1.2,0],[3.9,1.1,Math.PI/2]].forEach(function(a,i){if(i===2){const f=rotZ(cyl(.72,.72,.2,steel,48));f.position.set(a[0],a[1],0);p.add(f)}else{const f=cyl(.72,.72,.2,steel,48);f.position.set(a[0],a[1],0);p.add(f)}});
+  // valve wheel
+  const stem=cyl(.1,.1,1.0,steel,12);stem.position.set(0,-1.2,.9);stem.rotation.x=Math.PI/2;p.add(stem);
+  const wheel=new THREE.Group();wheel.add(new THREE.Mesh(new THREE.TorusGeometry(.7,.09,14,48),M({color:accent,roughness:.35,metalness:.5})));
+  for(let i=0;i<4;i++){const s=cyl(.045,.045,1.4,steel,8);s.rotation.z=i*Math.PI/4;wheel.add(s)}
+  wheel.add(new THREE.Mesh(new THREE.SphereGeometry(.16,16,12),steel));wheel.position.set(0,-1.2,1.55);p.add(wheel);
+  p.position.set(.8,-.4,-.2);p.rotation.y=-.5;p.rotation.z=-.0;g.add(p);
+  // water drops
+  const dm=M({color:0x9fd6ff,metalness:.1,roughness:.05,transparent:true,opacity:.85});const drops=[];
+  for(let i=0;i<5;i++){const d=new THREE.Mesh(new THREE.SphereGeometry(.14,16,12),dm);d.scale.set(.8,1.3,.8);p.add(d);drops.push(d)}
+  const sp=dust(110,3.6,accent,.05);g.add(sp);g.position.y=-.1;g.scale.setScalar(.72);
+  ticks.push(function(t){wheel.rotation.z=t*.9;w.rotation.z=.55+Math.sin(t*.6)*.06;head.rotation.z=0;mj.position.x=.52+Math.sin(t*.9)*.07;worm.rotation.x=t*1.2;drops.forEach(function(d,i){const k=((t*.7+i/5)%1);d.position.set(4.0,.75-k*k*4.6,0);d.scale.set(.8,1.3-k*.3,.8);d.material.opacity=.85*(1-k*k*.6)});g.rotation.y=Math.sin(t*.35)*.5;sp.rotation.y=t*.06});
+}
+
 function size(){const w=host.clientWidth||600,h=host.clientHeight||600;renderer.setSize(w,h,false);camera.aspect=w/h;const f=Math.max(1,.85/(w/h));camera.zoom=1/ (w/h<.9?1.35:1);camera.updateProjectionMatrix()}
 new ResizeObserver(size).observe(host);size();
 let vis=true;new IntersectionObserver(function(e){vis=e[0].isIntersecting}).observe(host);

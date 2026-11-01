@@ -25,3 +25,8 @@
 - Bounces by source: PlaySport info@ listing 2 (Hybrid gmail, CrossFit Whakatane), inferred/typo domain 2, Lovetaupo listing 1 (Mancraft hello@). Own-website addresses: 0 bounces so far. Rule stands: own-site verbatim addresses first.
 - Change today: added kind=barber (striped pole with scrolling stripes, scissors, comb). Verified desktop 1440x900 and mobile 390x844, no JS errors, object fully visible. No existing published folder touched.
 - Rule: use kind=barber for barbers/hair; do not reuse kind=core for them. Mancraft (barber, bounced) could be rebuilt as a new slug only if a verified contact is found.
+
+## 2026-11-01
+- Stats: 36 sent (+6 sent 2026-11-02 NZ, 8 queued), 1 reply (Pulse Pilates no thanks), 0 interested, 6 bounces (Gym Kids timed out, status 4.4.1, now logged as bounced). Own-website addresses: 0 bounces. Too small to rank anything.
+- Change today: added kind=plumb (wrench, pipe elbow + valve wheel, drops). Checked desktop 1440x900 and mobile 390x844, no JS errors, object fully visible. The wrench head is still fairly simple; candidate for a later polish. No published folder touched.
+- Rule: use kind=plumb for plumbers/gasfitters/drainlayers; keep kind=core for electricians.
