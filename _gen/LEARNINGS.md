@@ -30,3 +30,8 @@
 - Stats: 36 sent (+6 sent 2026-11-02 NZ, 8 queued), 1 reply (Pulse Pilates no thanks), 0 interested, 6 bounces (Gym Kids timed out, status 4.4.1, now logged as bounced). Own-website addresses: 0 bounces. Too small to rank anything.
 - Change today: added kind=plumb (wrench, pipe elbow + valve wheel, drops). Checked desktop 1440x900 and mobile 390x844, no JS errors, object fully visible. The wrench head is still fairly simple; candidate for a later polish. No published folder touched.
 - Rule: use kind=plumb for plumbers/gasfitters/drainlayers; keep kind=core for electricians.
+
+## 2026-11-02
+- Stats: 50 rows sent (49 unique recipients; Dunedin Kickboxing duplicated), 2 replies (both "no thanks": Pulse Pilates, approach A + lotus; Tudor House of Flowers, approach G + ribbon, no reason given), 0 interested, 6 bounces (all third-party listing/inferred sources; 14 own-site addresses sent 2026-11-02 so far: 0 bounces, 1 reply). Too small to rank approaches, types, styles or cities.
+- Change today: added kind=paw (paw print on a ringed disc, bone, bouncing ball, heart) with `paw` scene in gen.py; sample `_gen/dun/example_paw.py`. Checked desktop 1440x900 and mobile 390x844, no JS errors, object fully visible. No published folder touched.
+- Rule: use kind=paw for vets, dog/cat groomers, kennels/daycare, pet shops (Klipped K9 used kind=ribbon; leave as is).

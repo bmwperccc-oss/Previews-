@@ -96,6 +96,7 @@ SCENES={
  'cafe':dict(kind='cafe',envTop='#fff3e0',envMid='#9a6a43',envBot='#1a0e07',exposure=1.15),
  'barber':dict(kind='barber',envTop='#ffffff',envMid='#7d8aa3',envBot='#10141c',exposure=1.15),
  'plumb':dict(kind='plumb',envTop='#e8f4ff',envMid='#6d8aa8',envBot='#0c1622',exposure=1.15),
+ 'paw':dict(kind='paw',envTop='#fff6ea',envMid='#a68a6a',envBot='#15100a',exposure=1.15),
  'ballerina':dict(kind='ballerina',envTop='#ffffff',envMid='#9fcfcc',envBot='#244a49',exposure=1.1),
 }
 def from_json(d):

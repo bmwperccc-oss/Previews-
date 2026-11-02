@@ -322,6 +322,33 @@ if(kind==='plumb'){
   ticks.push(function(t){wheel.rotation.z=t*.9;w.rotation.z=.55+Math.sin(t*.6)*.06;head.rotation.z=0;mj.position.x=.52+Math.sin(t*.9)*.07;worm.rotation.x=t*1.2;drops.forEach(function(d,i){const k=((t*.7+i/5)%1);d.position.set(4.0,.75-k*k*4.6,0);d.scale.set(.8,1.3-k*.3,.8);d.material.opacity=.85*(1-k*k*.6)});g.rotation.y=Math.sin(t*.35)*.5;sp.rotation.y=t*.06});
 }
 
+if(kind==='paw'){
+  const g=G();camera.position.set(0,0.2,19);g.rotation.x=.16;
+  const padM=new THREE.MeshPhysicalMaterial({color:C.pad||0x2a2230,roughness:.3,metalness:.05,clearcoat:.8,clearcoatRoughness:.15});
+  const disc=cyl(3.1,3.2,.5,M({color:0xf3eee6,roughness:.25,metalness:.05}),72);disc.rotation.x=Math.PI/2;disc.position.set(0,.3,-.5);g.add(disc);
+  const rim=new THREE.Mesh(new THREE.TorusGeometry(3.15,.09,14,90),M({color:accent,roughness:.3,metalness:.6}));rim.position.set(0,.3,-.2);g.add(rim);
+  const paw=new THREE.Group();
+  const main=new THREE.Mesh(new THREE.SphereGeometry(1,40,28),padM);main.scale.set(1.15,.95,.42);main.position.set(0,-.65,0);paw.add(main);
+  const lobe=function(x,y){const l=new THREE.Mesh(new THREE.SphereGeometry(.5,28,20),padM);l.scale.set(1,.9,.55);l.position.set(x,y,0);paw.add(l)};
+  lobe(-.75,-.25);lobe(.75,-.25);lobe(0,-.05);
+  const toes=[[-1.7,.7,.62,.78,-.35],[-.62,1.5,.58,.82,-.1],[.62,1.5,.58,.82,.1],[1.7,.7,.62,.78,.35]];
+  toes.forEach(function(a){const t=new THREE.Mesh(new THREE.SphereGeometry(.7,32,22),padM);t.scale.set(a[2],a[3],.45);t.position.set(a[0],a[1]+.15,0);t.rotation.z=a[4];paw.add(t)});
+  paw.position.set(0,.4,.1);paw.scale.setScalar(.95);g.add(paw);
+  // bone
+  const bone=new THREE.Group(),bm=M({color:0xf4ead6,roughness:.35,metalness:.05});
+  const bs=cyl(.28,.28,2.6,bm,24);bs.rotation.z=Math.PI/2;bone.add(bs);
+  [[-1.3,.28],[-1.3,-.28],[1.3,.28],[1.3,-.28]].forEach(function(a){const k=new THREE.Mesh(new THREE.SphereGeometry(.42,24,18),bm);k.position.set(a[0],a[1],0);bone.add(k)});
+  bone.position.set(-3.3,-3.1,1.2);bone.rotation.z=.5;bone.rotation.y=.4;g.add(bone);
+  // ball
+  const ball=new THREE.Mesh(new THREE.SphereGeometry(.85,32,24),M({color:accent,roughness:.35,metalness:.1}));ball.position.set(3.4,-3.2,1.2);g.add(ball);
+  const seam=new THREE.Mesh(new THREE.TorusGeometry(.86,.035,8,40),M({color:0xffffff,roughness:.5}));seam.position.copy(ball.position);seam.rotation.y=Math.PI/2;g.add(seam);
+  // heart
+  const hs=new THREE.Shape();hs.moveTo(0,-.5);hs.bezierCurveTo(-.9,.1,-.6,.8,0,.45);hs.bezierCurveTo(.6,.8,.9,.1,0,-.5);
+  const heart=new THREE.Mesh(new THREE.ExtrudeGeometry(hs,{depth:.2,bevelEnabled:true,bevelThickness:.06,bevelSize:.05,bevelSegments:3}),M({color:accent,roughness:.3,metalness:.3}));heart.position.set(2.9,3.2,.4);heart.scale.setScalar(.9);g.add(heart);
+  const sp=dust(110,3.6,accent,.05);g.add(sp);g.position.y=.2;g.scale.setScalar(.7);
+  ticks.push(function(t){const b=1+Math.sin(t*2.2)*.025;paw.scale.setScalar(.95*b);bone.rotation.z=.5+Math.sin(t*.8)*.1;ball.position.y=-3.2+Math.abs(Math.sin(t*1.6))*.5;seam.position.copy(ball.position);seam.rotation.x=t;heart.scale.setScalar(.9+Math.sin(t*3)*.06);g.rotation.y=Math.sin(t*.35)*.5;sp.rotation.y=t*.06});
+}
+
 function size(){const w=host.clientWidth||600,h=host.clientHeight||600;renderer.setSize(w,h,false);camera.aspect=w/h;const f=Math.max(1,.85/(w/h));camera.zoom=1/ (w/h<.9?1.35:1);camera.updateProjectionMatrix()}
 new ResizeObserver(size).observe(host);size();
 let vis=true;new IntersectionObserver(function(e){vis=e[0].isIntersecting}).observe(host);
