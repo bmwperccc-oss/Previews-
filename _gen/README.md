@@ -13,3 +13,5 @@ New: kind=cafe (coffee cup, steam) with preset espresso-latte; see _gen/dun/exam
 2026-11-01: kind=plumb (adjustable wrench, brass pipe elbow with spinning valve wheel, dripping water) with any preset; see _gen/dun/example_plumb.py. Use for plumbers, drainlayers, gasfitters, handymen. Electricians stay on kind=core.
 
 2026-11-02: kind=paw (paw print, bone, ball, heart) with any preset; see _gen/dun/example_paw.py. Use for vets, groomers, kennels, pet shops. Added to kind list: lift|blueprint|bag|float|core|rings|tramp|stones|lotus|shoe|ribbon|mirrorball|ballerina|cafe|barber|plumb|paw|none.
+
+2026-11-03: kind=gear (meshing gears with accent hubs, hex bolt, spark plug) with any preset; see _gen/dun/example_gear.py. Use for mechanics, auto repair, engineering, workshops (instead of kind=core). Kind list now: lift|blueprint|bag|float|core|rings|tramp|stones|lotus|shoe|ribbon|mirrorball|ballerina|cafe|barber|plumb|paw|gear|none.

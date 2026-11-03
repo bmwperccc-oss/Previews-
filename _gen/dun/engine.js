@@ -349,6 +349,32 @@ if(kind==='paw'){
   ticks.push(function(t){const b=1+Math.sin(t*2.2)*.025;paw.scale.setScalar(.95*b);bone.rotation.z=.5+Math.sin(t*.8)*.1;ball.position.y=-3.2+Math.abs(Math.sin(t*1.6))*.5;seam.position.copy(ball.position);seam.rotation.x=t;heart.scale.setScalar(.9+Math.sin(t*3)*.06);g.rotation.y=Math.sin(t*.35)*.5;sp.rotation.y=t*.06});
 }
 
+if(kind==='gear'){
+  const g=G();camera.position.set(0,0.2,19);g.rotation.x=.14;
+  const gm=M({color:C.gear||0xb8bec8,metalness:1,roughness:.28});
+  const mkGear=function(R,teeth,th,hole,spokes){
+    const sh=new THREE.Shape(),n=teeth*4,ro=R,ri=R*.82;
+    for(let i=0;i<n;i++){const a=i/n*Math.PI*2,k=i%4,r=(k===1||k===2)?ro:ri,a2=a+(k===1?-.02:k===2?.02:0);const x=Math.cos(a2)*r,y=Math.sin(a2)*r;if(i===0)sh.moveTo(x,y);else sh.lineTo(x,y)}
+    sh.closePath();
+    const h=new THREE.Path();h.absarc(0,0,hole,0,Math.PI*2,true);sh.holes.push(h);
+    for(let i=0;i<spokes;i++){const a=(i+.5)/spokes*Math.PI*2,q=new THREE.Path();q.absarc(Math.cos(a)*R*.5,Math.sin(a)*R*.5,R*.16,0,Math.PI*2,true);sh.holes.push(q)}
+    const m=new THREE.Mesh(new THREE.ExtrudeGeometry(sh,{depth:th,bevelEnabled:true,bevelThickness:.06,bevelSize:.06,bevelSegments:3,curveSegments:24}),gm);m.position.z=-th/2;
+    const grp=new THREE.Group();grp.add(m);return grp};
+  const big=mkGear(2.5,16,.7,.55,5);big.position.set(-.9,.3,0);g.add(big);
+  const small=mkGear(1.3,9,.7,.3,0);small.position.set(2.4,-1.3,0);g.add(small);
+  const hub=cyl(.8,.8,1.1,M({color:accent,roughness:.3,metalness:.6}),40);hub.rotation.x=Math.PI/2;hub.position.set(-.9,.3,0);g.add(hub);
+  const hub2=cyl(.5,.5,1.1,M({color:accent,roughness:.3,metalness:.6}),32);hub2.rotation.x=Math.PI/2;hub2.position.set(2.4,-1.3,0);g.add(hub2);
+  // hex bolt
+  const bolt=new THREE.Group();const bh=cyl(.5,.5,.35,steel,6);bolt.add(bh);const bs=cyl(.22,.22,1.3,steel,20);bs.position.y=-.8;bolt.add(bs);
+  bolt.position.set(-3.6,-3.0,1);bolt.rotation.z=.6;bolt.rotation.x=.5;g.add(bolt);
+  // spark plug
+  const plug=new THREE.Group();const pc=cyl(.28,.28,1.5,M({color:0xf1ece2,roughness:.3,metalness:.05}),24);pc.position.y=.9;plug.add(pc);
+  const ph=cyl(.4,.4,.4,steel,6);ph.position.y=0;plug.add(ph);const pt=cyl(.2,.2,.7,steel,16);pt.position.y=-.5;plug.add(pt);const pr=cyl(.34,.34,.12,dark,24);pr.position.y=1.5;plug.add(pr);
+  plug.position.set(3.4,2.6,.6);plug.rotation.z=-.5;g.add(plug);
+  const sp=dust(110,3.6,accent,.05);g.add(sp);g.position.y=.1;g.scale.setScalar(.75);
+  ticks.push(function(t){big.rotation.z=t*.35;small.rotation.z=-t*.35*(16/9)+.2;hub.rotation.y=0;bolt.rotation.y=t*.6;plug.rotation.y=t*.5;g.rotation.y=Math.sin(t*.35)*.5;sp.rotation.y=t*.06});
+}
+
 function size(){const w=host.clientWidth||600,h=host.clientHeight||600;renderer.setSize(w,h,false);camera.aspect=w/h;const f=Math.max(1,.85/(w/h));camera.zoom=1/ (w/h<.9?1.35:1);camera.updateProjectionMatrix()}
 new ResizeObserver(size).observe(host);size();
 let vis=true;new IntersectionObserver(function(e){vis=e[0].isIntersecting}).observe(host);

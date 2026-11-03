@@ -35,3 +35,8 @@
 - Stats: 50 rows sent (49 unique recipients; Dunedin Kickboxing duplicated), 2 replies (both "no thanks": Pulse Pilates, approach A + lotus; Tudor House of Flowers, approach G + ribbon, no reason given), 0 interested, 6 bounces (all third-party listing/inferred sources; 14 own-site addresses sent 2026-11-02 so far: 0 bounces, 1 reply). Too small to rank approaches, types, styles or cities.
 - Change today: added kind=paw (paw print on a ringed disc, bone, bouncing ball, heart) with `paw` scene in gen.py; sample `_gen/dun/example_paw.py`. Checked desktop 1440x900 and mobile 390x844, no JS errors, object fully visible. No published folder touched.
 - Rule: use kind=paw for vets, dog/cat groomers, kennels/daycare, pet shops (Klipped K9 used kind=ribbon; leave as is).
+
+## 2026-11-03
+- Stats: 64 rows sent (63 unique), 2 replies (both polite "no thanks": Pulse Pilates A/lotus, Tudor House of Flowers G/ribbon, no reasons given), 0 interested, 6 bounces (all third-party listing or inferred sources). 28 own-site addresses sent 2026-11-02/03: 0 bounces so far, 0 new replies. Too small to rank anything.
+- Change today: added kind=gear (two meshing toothed gears with accent hubs, hex bolt, spark plug) with `gear` scene in gen.py; sample `_gen/dun/example_gear.py`. Checked desktop 1440x900 and mobile 390x844, no JS errors, object fully visible on desktop. No published folder touched.
+- Rule: use kind=gear for mechanics/auto repair/workshops (four mechanics so far used kind=core; leave those as is).
