@@ -147,19 +147,31 @@ if(kind==='stones'){
   ticks.push(function(t){wat.forEach(function(r,i){const u=((t*.28)+i/3)%1;r.scale.setScalar(.7+u*1.6);r.material.opacity=(1-u)*.6});st.forEach(function(m,i){m.position.x=Math.sin(t*.7+i)*.02*i});fl.rotation.y=t*.1;fl.position.y=2+Math.sin(t*.5)*.2});
 }
 if(kind==='lotus'){
-  const g=G();camera.position.set(0,2.2,11);g.rotation.x=.35;
+  const g=G();g.rotation.x=.35;
   const base=hueOf(accent),pets=[];
-  const layers=[[8,2.0,.32,1.55,.4],[8,1.75,.62,1.25,.5],[6,1.45,.95,.95,.58],[5,1.0,1.25,.62,.72]];
-  layers.forEach(function(L,li){for(let i=0;i<L[0];i++){const piv=new THREE.Group();piv.rotation.y=i/L[0]*Math.PI*2+li*.4;g.add(piv);
-    const sh=new THREE.Shape();sh.moveTo(0,0);sh.bezierCurveTo(.42,.35,.5,1.1,0,L[1]);sh.bezierCurveTo(-.5,1.1,-.42,.35,0,0);
-    const geo=new THREE.ShapeGeometry(sh,24),p=geo.attributes.position;for(let k=0;k<p.count;k++){const x=p.getX(k),yy=p.getY(k);p.setZ(k,-x*x*.5*(1+yy*.2))}geo.computeVertexNormals();
-    const m=new THREE.Mesh(geo,new THREE.MeshPhysicalMaterial({color:hsl(base,.85,.5+li*.06),roughness:.35,metalness:0,side:THREE.DoubleSide,emissive:hsl(base,.8,.3),emissiveIntensity:.35+li*.05,clearcoat:.6}));
-    m.scale.set(L[3],1,1);m.position.set(0,0,.25+li*.0);piv.add(m);const tilt=new THREE.Group();tilt.position.set(0,L[2]*.4,.15);piv.remove(m);m.position.set(0,0,0);tilt.add(m);piv.add(tilt);tilt.rotation.x=L[4];tilt.userData={b:L[4],i:i,li:li};pets.push(tilt)}});
-  const cen=new THREE.Mesh(new THREE.SphereGeometry(.34,32,24),M({color:0xffd34d,roughness:.4,emissive:0xffa400,emissiveIntensity:.5}));cen.position.y=.9;g.add(cen);
-  for(let i=0;i<24;i++){const a=i/24*6.283,s=new THREE.Mesh(new THREE.SphereGeometry(.05,10,8),M({color:0xffe27a,emissive:0xffb000,emissiveIntensity:.8}));s.position.set(Math.cos(a)*.34,.95+Math.sin(i*2)*.05,Math.sin(a)*.34);g.add(s)}
-  const pad=new THREE.Mesh(new THREE.CircleGeometry(2.6,70),M({color:C.pool||0x1d5b3a,roughness:.5,side:THREE.DoubleSide}));pad.rotation.x=-Math.PI/2;pad.position.y=-.1;g.add(pad);
+  // layers: [count, length, lift, width, tilt, hueShift]
+  const layers=[[10,2.15,.18,1.5,1.18,0],[9,1.95,.34,1.4,.95,.01],[8,1.7,.55,1.25,.72,.02],[7,1.45,.8,1.1,.52,.03],[6,1.15,1.0,.95,.34,.04],[5,.85,1.12,.8,.18,.05]];
+  layers.forEach(function(L,li){for(let i=0;i<L[0];i++){const piv=new THREE.Group();piv.rotation.y=i/L[0]*Math.PI*2+li*.37+(i%2?.04:-.04);g.add(piv);
+    const len=L[1],sh=new THREE.Shape();sh.moveTo(0,0);sh.bezierCurveTo(.5,.18,.58,len*.55,.06,len*.98);sh.lineTo(0,len*1.04);sh.lineTo(-.06,len*.98);sh.bezierCurveTo(-.58,len*.55,-.5,.18,0,0);
+    const geo=new THREE.ShapeGeometry(sh,28),p=geo.attributes.position,col=new Float32Array(p.count*3),cA=new THREE.Color().setHSL(base,.55,.84),cB=new THREE.Color().setHSL(base,1,.42+li*.02),cc=new THREE.Color();
+    for(let k=0;k<p.count;k++){const x=p.getX(k),yy=p.getY(k),u=Math.min(1,Math.max(0,yy/len));
+      // cup the petal across its width, curl the tip back, and add a faint central vein ridge
+      p.setZ(k,-x*x*.55*(1+yy*.18)+Math.pow(u,3)*.25-Math.exp(-x*x*90)*.025);
+      cc.copy(cA).lerp(cB,Math.pow(u,.8));col[k*3]=cc.r;col[k*3+1]=cc.g;col[k*3+2]=cc.b}
+    geo.setAttribute('color',new THREE.BufferAttribute(col,3));geo.computeVertexNormals();
+    const m=new THREE.Mesh(geo,new THREE.MeshPhysicalMaterial({vertexColors:true,roughness:.38,metalness:0,side:THREE.DoubleSide,emissive:hsl(base,.8,.3),emissiveIntensity:.12+li*.03,clearcoat:.5,clearcoatRoughness:.35}));
+    m.scale.set(L[3]*.8,1,1);const tilt=new THREE.Group();tilt.position.set(0,L[2]*.4,.12+(5-li)*.03);tilt.add(m);piv.add(tilt);tilt.rotation.x=L[4];tilt.userData={b:L[4],i:i,li:li};pets.push(tilt)}});
+  // seed pod: flat-topped cone with seed holes, ringed by stamens
+  const pod=new THREE.Mesh(new THREE.CylinderGeometry(.32,.2,.3,40),M({color:0xc7d84a,roughness:.5,emissive:0x6a7a10,emissiveIntensity:.25}));pod.position.y=.8;g.add(pod);
+  const top=new THREE.Mesh(new THREE.CircleGeometry(.3,40),M({color:0xe8f08a,roughness:.5}));top.rotation.x=-Math.PI/2;top.position.y=.956;g.add(top);
+  for(let i=0;i<9;i++){const a=i/9*6.283,r=i?.17:0,h=new THREE.Mesh(new THREE.CircleGeometry(.036,12),M({color:0x4a5a12,roughness:.8}));h.rotation.x=-Math.PI/2;h.position.set(Math.cos(a)*r,.96,Math.sin(a)*r);g.add(h)}
+  for(let i=0;i<40;i++){const a=i/40*6.283+i*.05,r=.36+(i%3)*.05,st=new THREE.Mesh(new THREE.CylinderGeometry(.012,.018,.38,6),M({color:0xffd34d,roughness:.45,emissive:0xffa400,emissiveIntensity:.35})),tp=new THREE.Mesh(new THREE.SphereGeometry(.035,10,8),M({color:0xffb000,roughness:.4,emissive:0xff8a00,emissiveIntensity:.6}));
+    st.position.set(Math.cos(a)*r,.85,Math.sin(a)*r);st.rotation.z=-Math.cos(a)*.35;st.rotation.x=Math.sin(a)*.35;g.add(st);tp.position.set(Math.cos(a)*(r+.07),1.02,Math.sin(a)*(r+.07));g.add(tp)}
+  // lily pad + water rings
+  const pad=new THREE.Mesh(new THREE.CircleGeometry(2.9,70),M({color:C.pool||0x1d5b3a,roughness:.45,side:THREE.DoubleSide}));pad.rotation.x=-Math.PI/2;pad.position.y=-.1;g.add(pad);
+  const rip=[0,1,2].map(function(){const r=new THREE.Mesh(new THREE.RingGeometry(1,1.03,100),new THREE.MeshBasicMaterial({color:accent,transparent:true,opacity:.5,side:THREE.DoubleSide,depthWrite:false}));r.rotation.x=-Math.PI/2;r.position.y=-.08;g.add(r);return r});
   const fl=dust(140,3.2,accent,.07);fl.position.y=1.8;g.add(fl);g.position.y=2.3;g.scale.setScalar(.8);camera.position.set(0,3.2,11);
-  ticks.push(function(t){pets.forEach(function(p){p.rotation.x=p.userData.b+Math.sin(t*.8+p.userData.li*.7)*.09});g.rotation.y=t*.1;fl.rotation.y=-t*.12});
+  ticks.push(function(t){pets.forEach(function(p){p.rotation.x=p.userData.b+Math.sin(t*.8+p.userData.li*.7+p.userData.i*.15)*.07});rip.forEach(function(r,i){const u=((t*.2)+i/3)%1;r.scale.setScalar(1.6+u*1.5);r.material.opacity=(1-u)*.5});g.rotation.y=t*.1;fl.rotation.y=-t*.12});
 }
 if(kind==='shoe'){
   const g=G();g.position.y=-.2;camera.position.set(0,.4,13);
