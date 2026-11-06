@@ -303,18 +303,28 @@ if(kind==='barber'){
 if(kind==='plumb'){
   const g=G();camera.position.set(0,0.2,19);g.rotation.x=.14;
   const brass=M({color:C.brass||0xd9a441,metalness:1,roughness:.24});
-  // adjustable wrench
+  // adjustable wrench (rebuilt 2026-11-06: tapered rounded handle with hanging hole, hooked fixed jaw, sliding jaw with serrations, knurled worm, accent grip inlay)
   const w=new THREE.Group();
-  const hs=new THREE.Shape();hs.moveTo(-.3,-3.6);hs.lineTo(.3,-3.6);hs.lineTo(.42,.1);hs.lineTo(-.42,.1);hs.closePath();
-  const handle=new THREE.Mesh(new THREE.ExtrudeGeometry(hs,{depth:.22,bevelEnabled:true,bevelThickness:.05,bevelSize:.05,bevelSegments:3}),steel);handle.position.z=-.11;w.add(handle);
-  const hole=cyl(.11,.11,.4,dark,20);hole.rotation.x=Math.PI/2;hole.position.set(0,-3.25,0);w.add(hole);
-  const hd=new THREE.Shape();hd.moveTo(-.9,0);hd.lineTo(.9,0);hd.lineTo(.95,1.2);hd.lineTo(.62,1.95);hd.lineTo(.0,2.1);hd.lineTo(-.62,1.95);hd.lineTo(-.95,1.2);hd.closePath();
-  const jaw=new THREE.Path();jaw.moveTo(-.34,.7);jaw.lineTo(.34,.7);jaw.lineTo(.34,2.2);jaw.lineTo(-.34,2.2);jaw.closePath();hd.holes.push(jaw);
-  const head=new THREE.Mesh(new THREE.ExtrudeGeometry(hd,{depth:.3,bevelEnabled:true,bevelThickness:.05,bevelSize:.05,bevelSegments:3}),steel);head.position.set(0,0,-.15);w.add(head);
-  const mj=new THREE.Mesh(new THREE.BoxGeometry(.34,1.0,.28),steel);mj.position.set(.52,1.15,0);w.add(mj);
-  const worm=cyl(.14,.14,1.3,steelK,24);worm.rotation.z=Math.PI/2;worm.position.set(.2,.45,0);w.add(worm);
-  for(let i=0;i<8;i++){const r=new THREE.Mesh(new THREE.TorusGeometry(.14,.025,8,20),dark);r.rotation.y=Math.PI/2;r.position.set(-.35+i*.14,.45,0);w.add(r)}
-  const grip=new THREE.Mesh(new THREE.CylinderGeometry(.34,.4,1.7,32),M({color:accent,roughness:.5,metalness:.1}));grip.position.set(0,-2.55,0);grip.scale.z=.55;w.add(grip);
+  const chrome=M({color:0xe6e9ef,metalness:1,roughness:.16});
+  const bev=function(d,t){return {depth:d,bevelEnabled:true,bevelThickness:t,bevelSize:t,bevelSegments:4,curveSegments:24}};
+  const hs=new THREE.Shape();hs.moveTo(-.3,-3.55);hs.absarc(0,-3.55,.3,Math.PI,Math.PI*2,false);hs.lineTo(.46,-.2);hs.lineTo(-.46,-.2);hs.closePath();
+  const hh=new THREE.Path();hh.absarc(0,-3.55,.1,0,Math.PI*2,true);hs.holes.push(hh);
+  const handle=new THREE.Mesh(new THREE.ExtrudeGeometry(hs,bev(.2,.05)),chrome);handle.position.z=-.1;w.add(handle);
+  const gs=new THREE.Shape();gs.moveTo(-.33,-3.0);gs.lineTo(.33,-3.0);gs.lineTo(.4,-1.1);gs.lineTo(-.4,-1.1);gs.closePath();
+  const grip=new THREE.Mesh(new THREE.ExtrudeGeometry(gs,bev(.3,.02)),M({color:accent,roughness:.5,metalness:.1}));grip.position.z=-.15;w.add(grip);
+  for(let i=0;i<5;i++){const gv=new THREE.Mesh(new THREE.BoxGeometry(.9,.03,.4),dark);gv.position.set(0,-2.85+i*.36,0);w.add(gv)}
+  const fx=new THREE.Shape();fx.moveTo(-.44,-.45);fx.lineTo(.44,-.45);fx.lineTo(.64,.1);fx.lineTo(.64,.72);fx.lineTo(-.28,.72);fx.lineTo(-.28,1.9);fx.lineTo(-.55,2.2);fx.lineTo(-.9,2.05);fx.lineTo(-1.0,1.3);fx.lineTo(-.92,.45);fx.closePath();
+  const head=new THREE.Mesh(new THREE.ExtrudeGeometry(fx,bev(.28,.06)),chrome);head.position.z=-.14;w.add(head);
+  const mjg=new THREE.Group();
+  const mx2=new THREE.Shape();mx2.moveTo(.28,.74);mx2.lineTo(.96,.74);mx2.lineTo(.99,1.7);mx2.lineTo(.74,2.12);mx2.lineTo(.28,1.95);mx2.closePath();
+  const mjaw=new THREE.Mesh(new THREE.ExtrudeGeometry(mx2,bev(.26,.05)),chrome);mjaw.position.z=-.13;mjg.add(mjaw);
+  const tooth=function(x,y,flip){const t=new THREE.Mesh(new THREE.BoxGeometry(.07,.07,.3),steel);t.position.set(x+(flip?.035:-.035),y,0);t.rotation.z=Math.PI/4;return t};
+  for(let i=0;i<7;i++){w.add(tooth(-.28,.95+i*.14,false));mjg.add(tooth(.28,.95+i*.14,true))}
+  w.add(mjg);
+  const mj=mjg;
+  const worm=cyl(.2,.2,1.5,steelK,28);worm.rotation.z=Math.PI/2;worm.position.set(.15,.28,0);w.add(worm);
+  for(let i=0;i<9;i++){const r=new THREE.Mesh(new THREE.TorusGeometry(.2,.03,8,24),dark);r.rotation.y=Math.PI/2;r.position.set(-.5+i*.16,.28,0);w.add(r)}
+  const pin=cyl(.09,.09,.42,steel,16);pin.rotation.x=Math.PI/2;pin.position.set(-.05,-.1,0);w.add(pin);
   w.position.set(-3.1,-.2,.5);w.rotation.z=.55;w.rotation.y=.35;w.scale.setScalar(1.05);g.add(w);
   // pipe elbow with flanges and valve wheel
   const p=new THREE.Group();
@@ -341,7 +351,7 @@ if(kind==='plumb'){
   const dm=M({color:0x9fd6ff,metalness:.1,roughness:.05,transparent:true,opacity:.85});const drops=[];
   for(let i=0;i<5;i++){const d=new THREE.Mesh(new THREE.SphereGeometry(.14,16,12),dm);d.scale.set(.8,1.3,.8);p.add(d);drops.push(d)}
   const sp=dust(110,3.6,accent,.05);g.add(sp);g.position.y=-.1;g.scale.setScalar(.72);
-  ticks.push(function(t){wheel.rotation.z=t*.9;w.rotation.z=.55+Math.sin(t*.6)*.06;head.rotation.z=0;mj.position.x=.52+Math.sin(t*.9)*.07;worm.rotation.x=t*1.2;drops.forEach(function(d,i){const k=((t*.7+i/5)%1);d.position.set(4.0,.75-k*k*4.6,0);d.scale.set(.8,1.3-k*.3,.8);d.material.opacity=.85*(1-k*k*.6)});g.rotation.y=Math.sin(t*.35)*.5;sp.rotation.y=t*.06});
+  ticks.push(function(t){wheel.rotation.z=t*.9;w.rotation.z=.55+Math.sin(t*.6)*.06;mj.position.x=Math.sin(t*.9)*.09+.05;worm.rotation.x=t*1.2;drops.forEach(function(d,i){const k=((t*.7+i/5)%1);d.position.set(4.0,.75-k*k*4.6,0);d.scale.set(.8,1.3-k*.3,.8);d.material.opacity=.85*(1-k*k*.6)});g.rotation.y=Math.sin(t*.35)*.5;sp.rotation.y=t*.06});
 }
 
 if(kind==='paw'){
