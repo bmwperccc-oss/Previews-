@@ -21,3 +21,5 @@ New: kind=cafe (coffee cup, steam) with preset espresso-latte; see _gen/dun/exam
 2026-11-05: kind=rings polished (wood grain, buckles, stitched straps, chalk dust); sample `_gen/dun/example_rings.py`. Use for gymnastics clubs. Kind list unchanged.
 
 2026-11-06: kind=plumb wrench rebuilt (tapered handle, hooked fixed jaw, serrated sliding jaw, knurled worm); sample `_gen/dun/example_plumb.py`. Kind list unchanged.
+
+2026-11-07: kind=shoe rebuilt (squared platform, seams, pleats, crossed ribbons, pair shifted clear of the card); sample `_gen/dun/example_shoe.py` (uses presets black-gold / blush-pink). Kind list unchanged.
