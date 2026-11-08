@@ -62,3 +62,9 @@
 - Observation: no outreach emails were sent 2026-11-04 to 2026-11-07 (sheet still ends at row 65, Gmail Sent shows nothing new). The daily batch may be paused or failing; check before assuming the numbers are growing.
 - Change today: rebuilt kind=shoe (pointe shoe): wider squared toe-box platform, shorter vamp, vamp/side/back seams, pleated drawstring gathers around the box, ribbons re-anchored to the throat and crossing, pair centred and shifted left so neither shoe sits under the info card (layouts a and c). Checked desktop 1440x900 (layouts a and c) and mobile 390x844 (no 3D on mobile by design), no JS errors, both shoes fully visible. Sample: `_gen/dun/example_shoe.py`. Published dance sites using shoe were NOT regenerated.
 - Rule: new dance/ballet sites get the better shoe automatically. All named weak objects are now polished; next improvement slot is (c) page quality or (d)/(e) targeting once there are enough replies to learn from.
+
+## 2026-11-08
+- Stats: 64 rows sent (63 unique), 2 replies (both polite "no thanks": Pulse Pilates A/lotus, Tudor House of Flowers G/ribbon, no reasons given), 0 interested, 6 bounces (all third-party listing or inferred sources, none new). Own-site addresses sent 2026-11-02/03: 0 bounces, 0 new replies. Too small to rank anything.
+- Observation: still no outreach sent since 2026-11-03 (sheet ends at row 65; Gmail Sent has no new website emails). The daily batch appears paused or failing: check it.
+- Change today (c, page quality): every new page now has a meta description, Open Graph tags (clean link preview if the owner shares the link) and a branded inline SVG favicon (no more favicon 404). Checked desktop 1440x900 and mobile 390x844 with the cafe sample, no JS errors. No published folder touched.
+- Rule: nothing new for targeting; own-site verbatim addresses remain the only reliable source. Next slot: (d)/(e) once replies exist; consider finding step sources with own-site emails.

@@ -13,7 +13,7 @@ def contact_lines(x):
     if x.get('phone'): out.append('<a href="tel:%s">%s</a>'%(re.sub(r'[^0-9+]','',x['phone']),E(x['phone'])))
     if x.get('email'): out.append('<a href="mailto:%s">%s</a>'%(E(x['email']),E(x['email'])))
     return out
-HEAD='''<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="robots" content="noindex"><meta name="theme-color" content="__THEME__"><title>__NAME__ | Website concept</title>
+HEAD='''<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="robots" content="noindex"><meta name="theme-color" content="__THEME__"><title>__NAME__ | Website concept</title><meta name="description" content="__METADESC__"><meta property="og:type" content="website"><meta property="og:title" content="__NAME__ | Website concept"><meta property="og:description" content="__METADESC__"><link rel="icon" href="__FAVICON__">
 <script>(function(){var d=document.documentElement;if(!matchMedia('(prefers-reduced-motion:reduce)').matches)d.classList.add('js')})();</script><style>__FONTS__
 *{box-sizing:border-box;margin:0;padding:0}html.lenis,html.lenis body{height:auto}.lenis.lenis-smooth{scroll-behavior:auto!important}.lenis.lenis-stopped{overflow:hidden}
 body{-webkit-font-smoothing:antialiased;overflow-x:hidden}a{color:inherit;text-decoration:none}img{display:block;max-width:100%}
@@ -50,5 +50,10 @@ def page(x,fonts,css,body,js,theme):
     reps={'__NAME__':E(x['name']),'__SUBURB__':E(x['suburb']),'__HEADLINE__':E(x['headline']),'__SUB__':E(x['sub']),'__CTA__':E(x['cta_url']),'__CTALABEL__':E(x['cta_label']),
           '__CLOSE__':E(x['close']),'__CLOSESUB__':E(x.get('close_sub','')),'__GIANT__':E(x.get('giant',x['name'].split()[0])),'__WORDS__':json.dumps(x['words']),
           '__ADDRESS__':E(x.get('address','')),'__SERVTITLE__':E(x.get('serv_title','What we do'))}
+    import urllib.parse
+    ac=x.get('ac','#ffd400');ini=(x['name'].strip()[:1] or 'W').upper()
+    svg="<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='14' fill='%s'/><text x='32' y='44' font-size='36' font-family='Arial,sans-serif' font-weight='700' text-anchor='middle' fill='%s'>%s</text></svg>"%(ac,x.get('on','#111'),E(ini))
+    reps['__FAVICON__']='data:image/svg+xml,'+urllib.parse.quote(svg,safe="/:=' ")
+    reps['__METADESC__']=E(('%s (%s). %s'%(x['name'],x['suburb'],x['sub']))[:155])
     for k in sorted(reps,key=len,reverse=True): t=t.replace(k,reps[k])
     return t
